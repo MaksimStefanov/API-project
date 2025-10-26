@@ -353,7 +353,7 @@ public class ApiTest {
         .then()
         .log()
         .all()
-        .statusCode(204); // ReqRes returns 204 even for invalid IDs (mock API behavior)
+        .statusCode(204); 
 
     LOG.info("✓ Invalid data test passed for /users/{id} endpoints");
   }
