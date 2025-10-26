@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="API Test Suite" verbose="2" parallel="false" thread-count="1">
+
+    <parameter name="baseUrl" value="https://reqres.in"/>
+    <parameter name="timeout" value="10000"/>
+
+    <test name="Positive API Tests" preserve-order="true">
+        <classes>
+            <class name="ApiTest">
+                <methods>
+                    <include name="testGetSingleUserValid"/>
+                    <include name="testGetUserListWithPagination"/>
+                    <include name="testPaginationAcrossPages"/>
+                    <include name="testCreateUserValid"/>
+                    <include name="testUpdateUserValid"/>
+                    <include name="testDeleteUserValid"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Negative API Tests" preserve-order="true">
+        <classes>
+            <class name="ApiTest">
+                <methods>
+                    <include name="testGetNonExistentUser"/>
+                    <include name="testInvalidUserIdFormats"/>
+                    <include name="testInvalidPaginationParameters"/>
+                    <include name="testCreateUserInvalidData"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Performance and Security Tests" preserve-order="true">
+        <classes>
+            <class name="ApiTest">
+                <methods>
+                    <include name="testResponseTimePerformance"/>
+                    <include name="testSqlInjectionSecurity"/>
+                    <include name="testApiContractCompliance"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>
+
