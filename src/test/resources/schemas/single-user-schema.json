@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Single User Response Schema",
+  "description": "Schema for validating single user API response from ReqRes",
+  "required": ["data", "support"],
+  "properties": {
+    "data": {
+      "type": "object",
+      "required": ["id", "email", "first_name", "last_name", "avatar"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "User ID"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "pattern": "^[a-zA-Z0-9._%+-]+@reqres\\.in$",
+          "description": "User email address from reqres.in domain"
+        },
+        "first_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "User's first name"
+        },
+        "last_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "User's last name"
+        },
+        "avatar": {
+          "type": "string",
+          "pattern": "^https://reqres\\.in/img/faces/\\d+-image\\.jpg$",
+          "description": "User avatar URL"
+        }
+      },
+      "additionalProperties": false
+    },
+    "support": {
+      "type": "object",
+      "required": ["url", "text"],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Support URL"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Support text message"
+        }
+      },
+      "additionalProperties": false
+    },
+    "_meta": {
+      "type": "object",
+      "description": "Optional metadata object",
+      "properties": {
+        "powered_by": {
+          "type": "string"
+        },
+        "upgrade_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "docs_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "template_gallery": {
+          "type": "string",
+          "format": "uri"
+        },
+        "message": {
+          "type": "string"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "upgrade_cta": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
+
