@@ -1,0 +1,604 @@
+Subject: [PATCH] upd
+---
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision 1b75604b9663a26e15069c2b3409d420048bc0c0)
++++ b/.idea/compiler.xml	(date 1761490833949)
+@@ -6,8 +6,12 @@
+         <sourceOutputDir name="target/generated-sources/annotations" />
+         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+         <outputRelativeToContentRoot value="true" />
+-        <module name="API-project" />
+       </profile>
+     </annotationProcessing>
+   </component>
++  <component name="JavacSettings">
++    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
++      <module name="API-project" options="-parameters -proc:none" />
++    </option>
++  </component>
+ </project>
+\ No newline at end of file
+Index: README.md
+===================================================================
+diff --git a/README.md b/README.md
+new file mode 100644
+--- /dev/null	(date 1761564447785)
++++ b/README.md	(date 1761564447785)
+@@ -0,0 +1,214 @@
++# API Testing Project
++
++A comprehensive API testing framework using RestAssured, TestNG, and Gatling for testing the [ReqRes API](https://reqres.in).
++
++
++## 🎯 Overview
++
++This project contains two types of automated tests:
++
++1. **Functional API Tests** - Verify API correctness using RestAssured and TestNG
++2. **Performance Tests** - Load and performance testing using Gatling (Java-based)
++
++
++---
++
++## 🛠 Technologies Used
++
++| Technology | Purpose | Version |
++|------------|---------|---------|
++| **Java** | Programming language | 11 |
++| **Maven** | Build and dependency management | 3.8+ |
++| **RestAssured** | API testing framework | 5.0.0 |
++| **TestNG** | Test framework | 7.8.0 |
++| **Gatling** | Performance testing | 3.10.3 |
++| **Jackson** | JSON processing | 2.15.2 |
++| **Hamcrest** | Assertion matchers | 2.2 |
++
++---
++
++
++---
++
++## ✅ Prerequisites
++
++Before running tests, ensure you have:
++
++- **Java JDK 11** or higher installed
++- **Maven 3.8+** installed
++- **Internet connection** (to access ReqRes API)
++- **PowerShell** or **Command Prompt** (Windows)
++
++### Verify Installation
++
++```powershell
++# Check Java version
++java -version
++
++# Check Maven version
++mvn -version
++```
++
++Expected output should show Java 11+ and Maven 3.8+.
++
++---
++
++## 🚀 Running Tests
++
++### Functional API Tests
++
++These tests verify the API behaves correctly (functional testing).
++
++#### Run All Tests
++
++```powershell
++mvn test
++```
++
++#### Run All Tests (Alternative)
++
++```powershell
++mvn clean test
++```
++
++#### Run Specific Test Class
++
++```powershell
++mvn test -Dtest=ApiTest
++```
++
++#### Run Specific Test Method
++
++```powershell
++mvn test -Dtest=ApiTest#testGetSingleUserValid
++```
++
++---
++
++### Performance Tests (Gatling)
++
++These tests measure API performance under load.
++
++#### Run Basic Performance Test (Recommended First)
++
++```powershell
++mvn gatling:test "-Dgatling.simulationClass=simulations.BasicPerformanceSimulation"
++```
++
++**What it does:**
++- Tests GET /users/2 endpoint
++- Ramps from 1 to 50 concurrent users over 30 seconds
++- Takes ~30 seconds to run
++- Generates HTML report with performance metrics
++
++#### Run Comprehensive Load Test
++
++```powershell
++mvn gatling:test "-Dgatling.simulationClass=simulations.ApiLoadSimulation"
++```
++
++**What it does:**
++- Tests all API endpoints (GET, PUT, PATCH, DELETE)
++- Multiple concurrent scenarios
++- Simulates realistic user workflows
++- Takes ~1 minute to run
++
++#### Run All Gatling Simulations
++
++```powershell
++mvn gatling:test
++```
++
++This will prompt you to choose which simulation to run.
++
++#### Run Gatling with Clean Build
++
++```powershell
++mvn clean gatling:test "-Dgatling.simulationClass=simulations.BasicPerformanceSimulation"
++```
++
++---
++
++## 📊 Test Reports
++
++Test reports are automatically generated after running tests:
++
++- **Functional tests**: `target/surefire-reports/index.html`
++- **Performance tests**: `target/gatling/<simulation-name>-<timestamp>/index.html`
++
++Open the HTML files in your web browser to view detailed test results.
++
++---
++
++## 🎯 Quick Command Reference
++
++### Most Common Commands
++
++```powershell
++# Run functional tests
++mvn test
++
++# Run basic performance test
++mvn gatling:test "-Dgatling.simulationClass=simulations.BasicPerformanceSimulation"
++
++# Run comprehensive performance test
++mvn gatling:test "-Dgatling.simulationClass=simulations.ApiLoadSimulation"
++
++# Clean build and run all tests
++mvn clean test
++
++# Run specific test
++mvn test -Dtest=ApiTest#testGetSingleUserValid
++
++# Compile only (no tests)
++mvn clean compile test-compile -DskipTests
++```
++
++---
++
++## 📊 Expected Results
++
++### Functional Tests
++```
++Tests run: 20+
++Failures: 0
++Errors: 0
++Skipped: 0
++Success rate: 100%
++Time elapsed: ~10 seconds
++```
++
++### Performance Tests (BasicPerformanceSimulation)
++```
++Request count: 50 (OK=50, KO=0)
++Mean response time: ~100ms
++95th percentile: ~200ms
++Success rate: 100%
++Time elapsed: ~30 seconds
++```
++
++---
++
++## 🌟 Test Execution Flow
++
++### Complete Test Run
++
++```powershell
++# Step 1: Clean previous build
++mvn clean
++
++# Step 2: Compile code
++mvn compile test-compile
++
++# Step 3: Run functional tests
++mvn test
++
++# Step 4: Run performance tests
++mvn gatling:test "-Dgatling.simulationClass=simulations.BasicPerformanceSimulation"
++
++# Step 5: View reports
++# - Functional: target/surefire-reports/index.html
++# - Performance: target/gatling/.../index.html
++```
++
++
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 1b75604b9663a26e15069c2b3409d420048bc0c0)
++++ b/pom.xml	(date 1761553030728)
+@@ -12,6 +12,9 @@
+         <maven.compiler.source>11</maven.compiler.source>
+         <maven.compiler.target>11</maven.compiler.target>
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++        <gatling.version>3.10.3</gatling.version>
++        <gatling-maven-plugin.version>4.8.0</gatling-maven-plugin.version>
++        <scala-maven-plugin.version>4.8.1</scala-maven-plugin.version>
+     </properties>
+ 
+     <repositories>
+@@ -101,6 +104,14 @@
+             <version>5.0.0</version>
+             <scope>test</scope>
+         </dependency>
++
++        <!-- Gatling for performance testing -->
++        <dependency>
++            <groupId>io.gatling.highcharts</groupId>
++            <artifactId>gatling-charts-highcharts</artifactId>
++            <version>${gatling.version}</version>
++            <scope>test</scope>
++        </dependency>
+     </dependencies>
+ 
+     <build>
+@@ -129,6 +140,41 @@
+                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                 </configuration>
+             </plugin>
++
++            <!-- Scala Maven Plugin for compiling Scala code -->
++            <plugin>
++                <groupId>net.alchim31.maven</groupId>
++                <artifactId>scala-maven-plugin</artifactId>
++                <version>${scala-maven-plugin.version}</version>
++                <executions>
++                    <execution>
++                        <goals>
++                            <goal>testCompile</goal>
++                        </goals>
++                        <configuration>
++                            <jvmArgs>
++                                <jvmArg>-Xss10M</jvmArg>
++                                <jvmArg>-Xmx512M</jvmArg>
++                            </jvmArgs>
++                            <args>
++                                <arg>-deprecation</arg>
++                                <arg>-feature</arg>
++                            </args>
++                        </configuration>
++                    </execution>
++                </executions>
++            </plugin>
++
++            <!-- Gatling Maven Plugin -->
++            <plugin>
++                <groupId>io.gatling</groupId>
++                <artifactId>gatling-maven-plugin</artifactId>
++                <version>${gatling-maven-plugin.version}</version>
++                <configuration>
++                    <!-- Default simulation class (can be overridden with -Dgatling.simulationClass) -->
++                    <simulationClass>simulations.BasicPerformanceSimulation</simulationClass>
++                </configuration>
++            </plugin>
+         </plugins>
+     </build>
+ 
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+--- a/.idea/jarRepositories.xml	(revision 1b75604b9663a26e15069c2b3409d420048bc0c0)
++++ b/.idea/jarRepositories.xml	(date 1761490833956)
+@@ -8,6 +8,11 @@
+     </remote-repository>
+     <remote-repository>
+       <option name="id" value="central" />
++      <option name="name" value="Maven Central Repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="central" />
+       <option name="name" value="Maven Central repository" />
+       <option name="url" value="https://repo1.maven.org/maven2" />
+     </remote-repository>
+Index: src/test/java/simulations/BasicPerformanceSimulation.java
+===================================================================
+diff --git a/src/test/java/simulations/BasicPerformanceSimulation.java b/src/test/java/simulations/BasicPerformanceSimulation.java
+new file mode 100644
+--- /dev/null	(date 1761553080855)
++++ b/src/test/java/simulations/BasicPerformanceSimulation.java	(date 1761553080855)
+@@ -0,0 +1,48 @@
++package simulations;
++
++import io.gatling.javaapi.core.*;
++import io.gatling.javaapi.http.*;
++
++import static io.gatling.javaapi.core.CoreDsl.*;
++import static io.gatling.javaapi.http.HttpDsl.*;
++
++import java.time.Duration;
++
++/**
++ * Basic Performance Test Simulation in Java
++ * Focuses on the core API endpoints with simple load patterns
++ */
++public class BasicPerformanceSimulation extends Simulation {
++
++    // HTTP Protocol Configuration
++    HttpProtocolBuilder httpProtocol = http
++        .baseUrl("https://reqres.in/api")
++        .acceptHeader("application/json")
++        .contentTypeHeader("application/json")
++        .header("x-api-key", "reqres-free-v1");
++
++    // Simple scenario: Get user by ID
++    ScenarioBuilder getUserScenario = scenario("Get User by ID")
++        .exec(
++            http("Get User")
++                .get("/users/2")
++                .check(status().is(200))
++                .check(jsonPath("$.data.id").is("2"))
++        );
++
++    // Load Simulation Setup
++    {
++        setUp(
++            getUserScenario.injectOpen(
++                // Start with 1 user, ramp up to 50 users over 30 seconds
++                rampUsers(50).during(Duration.ofSeconds(30))
++            )
++        ).protocols(httpProtocol)
++         .assertions(
++             global().responseTime().mean().lt(1000),           // Average response time < 1 second
++             global().responseTime().percentile(95.0).lt(2000), // 95th percentile < 2 seconds
++             global().successfulRequests().percent().gt(99.0)   // 99% success rate
++         );
++    }
++}
++
+Index: src/test/java/simulations/ApiLoadSimulation.java
+===================================================================
+diff --git a/src/test/java/simulations/ApiLoadSimulation.java b/src/test/java/simulations/ApiLoadSimulation.java
+new file mode 100644
+--- /dev/null	(date 1761553098109)
++++ b/src/test/java/simulations/ApiLoadSimulation.java	(date 1761553098109)
+@@ -0,0 +1,201 @@
++package simulations;
++
++import io.gatling.javaapi.core.*;
++import io.gatling.javaapi.http.*;
++
++import static io.gatling.javaapi.core.CoreDsl.*;
++import static io.gatling.javaapi.http.HttpDsl.*;
++
++import java.time.Duration;
++
++/**
++ * Gatling Load Testing Simulation for ReqRes API (Java Version)
++ * This mirrors the functional tests in ApiTest.java but adds load testing capabilities
++ */
++public class ApiLoadSimulation extends Simulation {
++
++    // HTTP Protocol Configuration - mirrors TestConfig.java
++    HttpProtocolBuilder httpProtocol = http
++        .baseUrl("https://reqres.in/api")
++        .acceptHeader("application/json")
++        .contentTypeHeader("application/json")
++        .header("x-api-key", "reqres-free-v1");
++
++    // Scenario 1: Get Single User (mirrors testGetSingleUserValid)
++    ScenarioBuilder getSingleUser = scenario("Get Single User")
++        .exec(
++            http("Get User 2")
++                .get("/users/2")
++                .check(status().is(200))
++                .check(jsonPath("$.data.id").is("2"))
++                .check(jsonPath("$.data.email").exists())
++                .check(jsonPath("$.data.first_name").exists())
++                .check(jsonPath("$.data.last_name").exists())
++                .check(jsonPath("$.data.avatar").exists())
++                .check(jsonPath("$.support.url").exists())
++                .check(responseTimeInMillis().lt(2000))
++        );
++
++    // Scenario 2: Get User List with Pagination (mirrors testGetUserListWithPagination)
++    ScenarioBuilder getUserList = scenario("Get User List")
++        .exec(
++            http("Get Users Page 1")
++                .get("/users")
++                .queryParam("page", "1")
++                .queryParam("per_page", "6")
++                .check(status().is(200))
++                .check(jsonPath("$.page").is("1"))
++                .check(jsonPath("$.per_page").is("6"))
++                .check(jsonPath("$.data").exists())
++                .check(jsonPath("$.total").exists())
++                .check(jsonPath("$.total_pages").exists())
++                .check(responseTimeInMillis().lt(2000))
++        );
++
++    // Scenario 3: Multiple Valid Users (mirrors testGetMultipleValidUsers with DataProvider)
++    ScenarioBuilder getMultipleUsers = scenario("Get Multiple Users")
++        .repeat(5, "userId").on(
++            exec(session -> {
++                int userId = session.getInt("userId") + 1;
++                return session.set("currentUserId", userId);
++            })
++            .exec(
++                http("Get User #{currentUserId}")
++                    .get("/users/#{currentUserId}")
++                    .check(status().is(200))
++                    .check(jsonPath("$.data.id").exists())
++                    .check(jsonPath("$.data.email").exists())
++                    .check(responseTimeInMillis().lt(2000))
++            )
++            .pause(Duration.ofMillis(100))
++        );
++
++    // Scenario 4: Update User (mirrors testUpdateUserValid)
++    ScenarioBuilder updateUser = scenario("Update User")
++        .exec(
++            http("Update User 2")
++                .put("/users/2")
++                .body(StringBody(
++                    "{" +
++                    "\"email\": \"morpheus.updated@example.com\"," +
++                    "\"first_name\": \"Morpheus\"," +
++                    "\"last_name\": \"Updated\"" +
++                    "}"
++                ))
++                .asJson()
++                .check(status().is(200))
++                .check(jsonPath("$.updatedAt").exists())
++                .check(responseTimeInMillis().lt(2000))
++        );
++
++    // Scenario 5: Partial Update (mirrors testPartiallyUpdateUser)
++    ScenarioBuilder patchUser = scenario("Patch User")
++        .exec(
++            http("Patch User 2")
++                .patch("/users/2")
++                .body(StringBody("{\"first_name\": \"Neo\"}"))
++                .asJson()
++                .check(status().is(200))
++                .check(jsonPath("$.first_name").is("Neo"))
++                .check(jsonPath("$.updatedAt").exists())
++                .check(responseTimeInMillis().lt(2000))
++        );
++
++    // Scenario 6: Delete User (mirrors testDeleteUserValid)
++    ScenarioBuilder deleteUser = scenario("Delete User")
++        .exec(
++            http("Delete User 2")
++                .delete("/users/2")
++                .check(status().is(204))
++                .check(responseTimeInMillis().lt(2000))
++        );
++
++    // Scenario 7: Invalid User IDs (mirrors testInvalidUserIdFormats)
++    ScenarioBuilder getInvalidUsers = scenario("Get Invalid Users")
++        .exec(
++            http("Get Invalid User - abc")
++                .get("/users/abc")
++                .check(status().is(404))
++        )
++        .pause(Duration.ofMillis(100))
++        .exec(
++            http("Get Invalid User - -1")
++                .get("/users/-1")
++                .check(status().is(404))
++        )
++        .pause(Duration.ofMillis(100))
++        .exec(
++            http("Get Invalid User - 999")
++                .get("/users/999")
++                .check(status().is(404))
++        );
++
++    // Scenario 8: Mixed API Operations - Realistic user flow
++    ScenarioBuilder mixedOperations = scenario("Mixed API Operations")
++        .exec(
++            http("Get User List")
++                .get("/users?page=1&per_page=6")
++                .check(status().is(200))
++        )
++        .pause(Duration.ofMillis(500))
++        .exec(
++            http("Get Specific User")
++                .get("/users/2")
++                .check(status().is(200))
++        )
++        .pause(Duration.ofMillis(300))
++        .exec(
++            http("Update User")
++                .put("/users/2")
++                .body(StringBody("{\"first_name\": \"Updated\", \"last_name\": \"Name\"}"))
++                .asJson()
++                .check(status().is(200))
++        );
++
++    // Load Simulation Setup
++    {
++        setUp(
++            // Light load: Get single user repeatedly
++            getSingleUser.injectOpen(
++                rampUsers(10).during(Duration.ofSeconds(10))
++            ).protocols(httpProtocol),
++
++            // Moderate load: Get user list
++            getUserList.injectOpen(
++                constantUsersPerSec(2).during(Duration.ofSeconds(15))
++            ).protocols(httpProtocol),
++
++            // Stress test: Multiple users accessing different endpoints
++            getMultipleUsers.injectOpen(
++                atOnceUsers(5)
++            ).protocols(httpProtocol),
++
++            // Write operations with lower concurrency
++            updateUser.injectOpen(
++                rampUsers(5).during(Duration.ofSeconds(10))
++            ).protocols(httpProtocol),
++
++            patchUser.injectOpen(
++                rampUsers(3).during(Duration.ofSeconds(8))
++            ).protocols(httpProtocol),
++
++            deleteUser.injectOpen(
++                rampUsers(3).during(Duration.ofSeconds(8))
++            ).protocols(httpProtocol),
++
++            // Security/negative testing
++            getInvalidUsers.injectOpen(
++                atOnceUsers(2)
++            ).protocols(httpProtocol),
++
++            // Realistic mixed load
++            mixedOperations.injectOpen(
++                rampUsers(15).during(Duration.ofSeconds(20))
++            ).protocols(httpProtocol)
++        ).assertions(
++            global().responseTime().max().lt(5000),           // Max response time under 5 seconds
++            global().successfulRequests().percent().gt(95.0)  // 95% success rate
++        );
++    }
++}
++
